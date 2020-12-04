@@ -1,0 +1,114 @@
+---
+title: "Paper figures"
+author: "KC"
+date: "12/4/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## TIDES Snyder Subset Paper Outline 
+
+These are figures to go with '2020_12_02 Snyder Subset Paper Outline jja.xlsx'
+
+**Variability in protein expression**
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(readxl)
+countdown <- read_excel("/Users/kcarpio/Desktop/countdown.xlsx")
+
+library(ggplot2)
+library(ggpubr)
+library(dplyr)
+library(reshape)
+
+countdown$Sample <- as.factor(countdown$Sample)
+countdown$Tissue <- as.factor(countdown$Tissue)
+
+Replicatenum.labs <- c("Rep. 1", "Rep. 2")
+names(Replicatenum.labs) <- c("1", "2")
+  
+countdown = as.data.frame(countdown)
+
+c <- countdown %>%
+  melt(id.vars = c("ID", "Sample", "Tissue", "Replicate", "Actin"), value.name = "value", measure.vars = c('PPARg.actin_indp', 'hCG.b.actin_indp', 'hCG.a.actin_indp'))
+
+ggplot(c, aes(x = variable, y = value, fill = variable)) + geom_point(size=1) + theme_bw() + geom_boxplot()+ labs(x="Protein", y = "Relative expression of target protein", subtitle = "Variability in target proteins normalized to actin_ind and protein pool (collapsed replicates)")+scale_fill_manual(values = c("#00BFC4", "#E69F00","#C77CFF"))+facet_grid(.~Tissue)+scale_y_continuous(breaks=seq(0,8,1))+theme(axis.text.x=element_text(angle = 45))
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(readxl)
+countdown <- read_excel("/Users/kcarpio/Desktop/countdown.xlsx")
+
+library(ggplot2)
+library(ggpubr)
+library(dplyr)
+library(reshape)
+
+countdown$Sample <- as.factor(countdown$Sample)
+countdown$Tissue <- as.factor(countdown$Tissue)
+
+Replicatenum.labs <- c("Rep. 1", "Rep. 2")
+names(Replicatenum.labs) <- c("1", "2")
+  
+countdown = as.data.frame(countdown)
+
+d <- countdown %>%
+  melt(id.vars = c("ID", "Sample", "Tissue", "Replicate", "Actin"), value.name = "value", measure.vars = c('PPARg.actin_ind', 'hCG.b.actin_ind', 'hCG.a.actin_ind'))
+
+ggplot(d, aes(x = variable, y = value, fill = variable)) + geom_point(size=1) + theme_bw() + geom_boxplot()+ labs(x="Protein", y = "Relative expression of target protein", subtitle = "Variability in target proteins normalized to actin_ind (collapsed replicates)")+scale_fill_manual(values = c("#00BFC4", "#E69F00","#C77CFF"))+facet_grid(.~Tissue)+scale_y_continuous(breaks=seq(0,0.5,0.1))+theme(axis.text.x=element_text(angle = 45))
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(readxl)
+tidesgm <- read_excel("/Users/kcarpio/Desktop/Tides_qPCR_Dec.4.xlsx")
+
+library(ggplot2)
+library(ggpubr)
+library(dplyr)
+library(reshape)
+
+tidesgm$Sample <- as.factor(tidesgm$Sample)
+tidesgm$Tissue <- as.factor(tidesgm$Tissue)
+
+Replicatenum.labs <- c("Rep. 1", "Rep. 2")
+names(Replicatenum.labs) <- c("1", "2")
+  
+tidesgm = as.data.frame(tidesgm)
+
+a <- tidesgm %>%
+  melt(id.vars = c("Sample", "Tissue", "Replicate"), value.name = "value", measure.vars = c('X18S', 'SDHA', 'UBP1','CGA', 'CGB', 'SNORA46', 'PPARg'))
+
+ggplot(a, aes(x = variable, y = value, fill = variable), fill = NA, coef = 0, outlier.alpha = 0) + geom_boxplot() + theme_bw()+ stat_summary(fun=mean, geom="point", shape=20, size=4, color="yellow", fill="yellow") + labs(x="Gene", y = "Relative expression of genes", subtitle = "Variability of housekeeping and target genes in all tissue types", caption = "Yellow circle represents group average") + geom_point(size = 1)+scale_y_continuous(breaks=seq(0,3,0.4)) + facet_grid(~Tissue)
+
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(readxl)
+tidesgm <- read_excel("/Users/kcarpio/Desktop/Tides_qPCR_Dec.4.xlsx")
+
+library(ggplot2)
+library(ggpubr)
+library(dplyr)
+library(reshape)
+
+tidesgm$Sample <- as.factor(tidesgm$Sample)
+tidesgm$Tissue <- as.factor(tidesgm$Tissue)
+
+Replicatenum.labs <- c("Rep. 1", "Rep. 2")
+names(Replicatenum.labs) <- c("1", "2")
+  
+tidesgm = as.data.frame(tidesgm)
+
+b <- tidesgm %>%
+  melt(id.vars = c("Sample", "Tissue", "Replicate"), value.name = "value", measure.vars = c('CGA', 'CGB', 'SNORA46', 'PPARg', 'CGA.n', 'CGB.n', 'SNORA46.n', 'PPARg.n'))
+
+ggplot(b, aes(x = variable, y = value, fill = variable), fill = NA, coef = 0, outlier.alpha = 0) + geom_boxplot() + theme_bw()+ stat_summary(fun=mean, geom="point", shape=20, size=4, color="yellow", fill="yellow") + labs(x="Gene", y = "Relative expression of genes", subtitle = "Variability of target genes pre- and post-normalization in all tissue types", caption = "Yellow circle represents group average") + geom_point(size = 1)+scale_y_continuous(breaks=seq(-3,3,0.5)) + facet_grid(~Tissue) + scale_fill_manual(values = c("coral", "darkolivegreen2", "deepskyblue", "deeppink", "coral3", "darkolivegreen3", "deepskyblue3", "deeppink3"))+theme(axis.text.x = element_text(angle = 45))
+
+
+```
