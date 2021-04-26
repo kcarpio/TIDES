@@ -1,0 +1,97 @@
+---
+title: "Phthalates panel, protein biomarkers (Empiria)"
+author: "KC"
+date: "4/26/2021"
+output: html_document
+---
+
+Placental phthalates show AAPrev, urinary pthalates show AAPmono
+
+lnAAPrev_nor: Summary placental phthalate measurement, normalized to placental weight (ln=ln-transformed) <br/>
+lnAAPmonosg: Summary urinary phthalate measurement, normalized to specific gravity (ln=ln-transformed)
+
+data: total-tides.csv, tides-fsex-3u-phthalates-plots.csv
+
+# Placental
+
+```{r echo=FALSE, fig.show="hold", message=FALSE, warning=FALSE, out.width="30%"}
+
+library(readxl)
+bo <- read_excel("/Users/kcarpio/Desktop/tides-fsex-phthalates-plots.xlsx")
+
+bo$Tissue <- as.factor(bo$Tissue)
+bo$BabySex <- as.factor(bo$BabySex)
+bo$Sample <- as.factor(bo$Sample)
+
+library(lme4)
+library(lmerTest)
+library(ggplot2)
+
+# Placental phthalates
+
+qplot(AAPrev_lnp, PPARg.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("PPARg")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold"))
+
+qplot(AAPrev_lnp, hCGa.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("hCGa")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold"))
+
+qplot(AAPrev_lnp, hCGb.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("hCGb")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold"))
+
+```
+
+# Urinary, first trimester 
+
+```{r echo=FALSE, fig.show="hold", message=FALSE, warning=FALSE, out.width="30%"}
+
+library(readxl)
+bo <- read_excel("/Users/kcarpio/Desktop/tides-fsex-phthalates-plots.xlsx")
+
+bo$Tissue <- as.factor(bo$Tissue)
+bo$BabySex <- as.factor(bo$BabySex)
+bo$Sample <- as.factor(bo$Sample)
+
+library(lme4)
+library(lmerTest)
+library(ggplot2)
+
+# First trimester urinary
+
+qplot(lnAAPmonosg, PPARg.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("PPARg")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold"))
+
+qplot(lnAAPmonosg, hCGa.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("hCGa")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold"))
+
+qplot(lnAAPmonosg, hCGb.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("hCGb")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold"))
+
+```
+
+# Urinary, third trimester 
+
+```{r echo=FALSE, fig.show="hold", message=FALSE, warning=FALSE, out.width="30%"}
+
+library(readxl)
+bo <- read_excel("/Users/kcarpio/Desktop/tides-fsex-3u-phthalates-plots.xlsx")
+
+bo$Tissue <- as.factor(bo$Tissue)
+bo$BabySex <- as.factor(bo$BabySex)
+bo$Sample <- as.factor(bo$Sample)
+
+library(lme4)
+library(lmerTest)
+library(ggplot2)
+
+# Third trimester urinary
+
+qplot(lnAAPmonosg_3U, PPARg.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("PPARg")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold"))
+
+qplot(lnAAPmonosg_3U, hCGa.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("hCGa")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold"))
+
+qplot(lnAAPmonosg_3U, hCGb.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("hCGb")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold"))
+
+```
