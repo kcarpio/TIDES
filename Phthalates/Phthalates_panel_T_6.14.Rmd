@@ -1,7 +1,7 @@
 ---
-title: "Phthalates panel, protein biomarkers (Empiria)"
+title: "Phthalates panel, Transcripts"
 author: "KC"
-date: "4/26/2021"
+date: "6/14/2021"
 output: html_document
 ---
 
@@ -14,7 +14,7 @@ data: total-tides.csv, tides-fsex-3u-phthalates-plots.csv
 
 # Placental
 
-```{r echo=FALSE, fig.show="hold", message=FALSE, warning=FALSE, out.width="30%"}
+```{r echo=FALSE, fig.show="hold", message=FALSE, warning=FALSE, out.width="50%"}
 
 library(readxl)
 bo <- read_excel("/Users/kcarpio/Desktop/tides-fsex-phthalates-plots.xlsx")
@@ -27,10 +27,13 @@ library(lme4)
 library(lmerTest)
 library(ggplot2)
 
+# Note: all panels have y-axis limits from -1 to 1.5 units.
+
 # Placental phthalates
 
-qplot(AAPrev_lnp, PPARg.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
-  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("PPARg")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) + theme(axis.text = element_text(size = 10)) +
+qplot(AAPrev_lnp, PPARg.SDHA, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("PPARg")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) +
+    theme(axis.text = element_text(size = 10)) +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         strip.background = element_blank())+
@@ -40,13 +43,13 @@ qplot(AAPrev_lnp, PPARg.empl, data=bo, color = Sample, linetype = BabySex,geom='
                                     face="bold")) +
   scale_linetype_discrete(name="Fetal\nSex",
                           breaks=c("1", "2"),
-                          labels=c("Male", "Female"))+ ylim(2.5, 10) +
+                          labels=c("Male", "Female"))+ ylim(-1, 1.5) +
   theme(plot.title = element_text(face = "bold"), axis.text.x = element_text(size=10, face="bold", colour = "black"), axis.text.y = element_text(size=10, face="bold", colour = "black"), strip.text.x = element_blank(), axis.line.y = element_line(), axis.line.x = element_line(), axis.ticks = element_line()) +
   guides(linetype=guide_legend("Fetal Sex"), color = FALSE)
 
-qplot(AAPrev_lnp, hCGa.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
-  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("hCGa")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) + 
-  theme(axis.text = element_text(size = 10)) +
+qplot(AAPrev_lnp, CGA.n, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("CGA")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) +
+     theme(axis.text = element_text(size = 10)) +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         strip.background = element_blank())+
@@ -56,13 +59,13 @@ qplot(AAPrev_lnp, hCGa.empl, data=bo, color = Sample, linetype = BabySex,geom='p
                                     face="bold")) +
   scale_linetype_discrete(name="Fetal\nSex",
                           breaks=c("1", "2"),
-                          labels=c("Male", "Female"))+ ylim(2.5, 10) +
+                          labels=c("Male", "Female"))+ ylim(-1, 1.5) +
   theme(plot.title = element_text(face = "bold"), axis.text.x = element_text(size=10, face="bold", colour = "black"), axis.text.y = element_text(size=10, face="bold", colour = "black"), strip.text.x = element_blank(), axis.line.y = element_line(), axis.line.x = element_line(), axis.ticks = element_line()) +
   guides(linetype=guide_legend("Fetal Sex"), color = FALSE)
 
-qplot(AAPrev_lnp, hCGb.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
-  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("hCGb")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) +
-  theme(axis.text = element_text(size = 10)) +
+qplot(AAPrev_lnp, CGB.n, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("CGB")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) +
+     theme(axis.text = element_text(size = 10)) +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         strip.background = element_blank())+
@@ -72,7 +75,23 @@ qplot(AAPrev_lnp, hCGb.empl, data=bo, color = Sample, linetype = BabySex,geom='p
                                     face="bold")) +
   scale_linetype_discrete(name="Fetal\nSex",
                           breaks=c("1", "2"),
-                          labels=c("Male", "Female"))+ ylim(2.5, 10) +
+                          labels=c("Male", "Female"))+ ylim(-1, 1.5) +
+  theme(plot.title = element_text(face = "bold"), axis.text.x = element_text(size=10, face="bold", colour = "black"), axis.text.y = element_text(size=10, face="bold", colour = "black"), strip.text.x = element_blank(), axis.line.y = element_line(), axis.line.x = element_line(), axis.ticks = element_line()) +
+  guides(linetype=guide_legend("Fetal Sex"), color = FALSE)
+
+qplot(AAPrev_lnp, SNORA46.SDHA, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("SNORA46")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold"))+
+     theme(axis.text = element_text(size = 10)) +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        strip.background = element_blank())+
+  theme(legend.text = element_text(size=10, 
+                                   face="bold"))+
+  theme(legend.title = element_text(size=10, 
+                                    face="bold")) +
+  scale_linetype_discrete(name="Fetal\nSex",
+                          breaks=c("1", "2"),
+                          labels=c("Male", "Female"))+ ylim(-1, 1.5) +
   theme(plot.title = element_text(face = "bold"), axis.text.x = element_text(size=10, face="bold", colour = "black"), axis.text.y = element_text(size=10, face="bold", colour = "black"), strip.text.x = element_blank(), axis.line.y = element_line(), axis.line.x = element_line(), axis.ticks = element_line()) +
   guides(linetype=guide_legend("Fetal Sex"), color = FALSE)
 
@@ -80,7 +99,7 @@ qplot(AAPrev_lnp, hCGb.empl, data=bo, color = Sample, linetype = BabySex,geom='p
 
 # Urinary, first trimester 
 
-```{r echo=FALSE, fig.show="hold", message=FALSE, warning=FALSE, out.width="30%"}
+```{r echo=FALSE, fig.show="hold", message=FALSE, warning=FALSE, out.width="50%"}
 
 library(readxl)
 bo <- read_excel("/Users/kcarpio/Desktop/tides-fsex-phthalates-plots.xlsx")
@@ -95,7 +114,7 @@ library(ggplot2)
 
 # First trimester urinary
 
-qplot(lnAAPmonosg, PPARg.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+qplot(lnAAPmonosg, PPARg.SDHA, data=bo, color = Sample, linetype = BabySex,geom='point') +  
   geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("PPARg")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) +
   theme(axis.text = element_text(size = 10)) +
   theme(panel.grid.major = element_blank(),
@@ -107,12 +126,12 @@ qplot(lnAAPmonosg, PPARg.empl, data=bo, color = Sample, linetype = BabySex,geom=
                                     face="bold")) +
   scale_linetype_discrete(name="Fetal\nSex",
                           breaks=c("1", "2"),
-                          labels=c("Male", "Female"))+ ylim(2.5, 10) +
+                          labels=c("Male", "Female")) + ylim(-1, 1.5) +
   theme(plot.title = element_text(face = "bold"), axis.text.x = element_text(size=10, face="bold", colour = "black"), axis.text.y = element_text(size=10, face="bold", colour = "black"), strip.text.x = element_blank(), axis.line.y = element_line(), axis.line.x = element_line(), axis.ticks = element_line()) +
   guides(linetype=guide_legend("Fetal Sex"), color = FALSE)
 
-qplot(lnAAPmonosg, hCGa.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
-  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("hCGa")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) +
+qplot(lnAAPmonosg, CGA.n, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("CGA")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) +
   theme(axis.text = element_text(size = 10)) +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
@@ -123,12 +142,12 @@ qplot(lnAAPmonosg, hCGa.empl, data=bo, color = Sample, linetype = BabySex,geom='
                                     face="bold")) +
   scale_linetype_discrete(name="Fetal\nSex",
                           breaks=c("1", "2"),
-                          labels=c("Male", "Female"))+ ylim(2.5, 10) +
+                          labels=c("Male", "Female"))+ ylim(-1, 1.5) +
   theme(plot.title = element_text(face = "bold"), axis.text.x = element_text(size=10, face="bold", colour = "black"), axis.text.y = element_text(size=10, face="bold", colour = "black"), strip.text.x = element_blank(), axis.line.y = element_line(), axis.line.x = element_line(), axis.ticks = element_line()) +
   guides(linetype=guide_legend("Fetal Sex"), color = FALSE)
 
-qplot(lnAAPmonosg, hCGb.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
-  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("hCGb")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) +
+qplot(lnAAPmonosg, CGB.n, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("CGB")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) +
   theme(axis.text = element_text(size = 10)) +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
@@ -139,7 +158,23 @@ qplot(lnAAPmonosg, hCGb.empl, data=bo, color = Sample, linetype = BabySex,geom='
                                     face="bold")) +
   scale_linetype_discrete(name="Fetal\nSex",
                           breaks=c("1", "2"),
-                          labels=c("Male", "Female"))+ ylim(2.5, 10) +
+                          labels=c("Male", "Female"))+  ylim(-1, 1.5) +
+  theme(plot.title = element_text(face = "bold"), axis.text.x = element_text(size=10, face="bold", colour = "black"), axis.text.y = element_text(size=10, face="bold", colour = "black"), strip.text.x = element_blank(), axis.line.y = element_line(), axis.line.x = element_line(), axis.ticks = element_line()) +
+  guides(linetype=guide_legend("Fetal Sex"), color = FALSE)
+
+qplot(lnAAPmonosg, SNORA46.SDHA, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("SNORA46")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) +
+  theme(axis.text = element_text(size = 10)) +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        strip.background = element_blank())+
+  theme(legend.text = element_text(size=10, 
+                                   face="bold"))+
+  theme(legend.title = element_text(size=10, 
+                                    face="bold")) +
+  scale_linetype_discrete(name="Fetal\nSex",
+                          breaks=c("1", "2"),
+                          labels=c("Male", "Female"))+ ylim(-1, 1.5) +
   theme(plot.title = element_text(face = "bold"), axis.text.x = element_text(size=10, face="bold", colour = "black"), axis.text.y = element_text(size=10, face="bold", colour = "black"), strip.text.x = element_blank(), axis.line.y = element_line(), axis.line.x = element_line(), axis.ticks = element_line()) +
   guides(linetype=guide_legend("Fetal Sex"), color = FALSE)
 
@@ -147,7 +182,7 @@ qplot(lnAAPmonosg, hCGb.empl, data=bo, color = Sample, linetype = BabySex,geom='
 
 # Urinary, third trimester 
 
-```{r echo=FALSE, fig.show="hold", message=FALSE, warning=FALSE, out.width="30%"}
+```{r echo=FALSE, fig.show="hold", message=FALSE, warning=FALSE, out.width="50%"}
 
 library(readxl)
 bo <- read_excel("/Users/kcarpio/Desktop/tides-fsex-3u-phthalates-plots.xlsx")
@@ -162,7 +197,7 @@ library(ggplot2)
 
 # Third trimester urinary
 
-qplot(lnAAPmonosg_3U, PPARg.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+qplot(lnAAPmonosg_3U, PPARg.SDHA, data=bo, color = Sample, linetype = BabySex,geom='point') +  
   geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("PPARg")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) +
   theme(axis.text = element_text(size = 10)) +
   theme(panel.grid.major = element_blank(),
@@ -174,12 +209,12 @@ qplot(lnAAPmonosg_3U, PPARg.empl, data=bo, color = Sample, linetype = BabySex,ge
                                     face="bold")) +
   scale_linetype_discrete(name="Fetal\nSex",
                           breaks=c("1", "2"),
-                          labels=c("Male", "Female"))+ ylim(2.5, 10) +
+                          labels=c("Male", "Female"))+ ylim(-1, 1.5) +
   theme(plot.title = element_text(face = "bold"), axis.text.x = element_text(size=10, face="bold", colour = "black"), axis.text.y = element_text(size=10, face="bold", colour = "black"), strip.text.x = element_blank(), axis.line.y = element_line(), axis.line.x = element_line(), axis.ticks = element_line()) +
   guides(linetype=guide_legend("Fetal Sex"), color = FALSE)
 
-qplot(lnAAPmonosg_3U, hCGa.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
-  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("hCGa")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) +
+qplot(lnAAPmonosg_3U, CGA.n, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("CGA")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) +
   theme(axis.text = element_text(size = 10)) +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
@@ -190,12 +225,12 @@ qplot(lnAAPmonosg_3U, hCGa.empl, data=bo, color = Sample, linetype = BabySex,geo
                                     face="bold")) +
   scale_linetype_discrete(name="Fetal\nSex",
                           breaks=c("1", "2"),
-                          labels=c("Male", "Female"))+ ylim(2.5, 10) +
+                          labels=c("Male", "Female"))+ ylim(-1, 1.5) +
   theme(plot.title = element_text(face = "bold"), axis.text.x = element_text(size=10, face="bold", colour = "black"), axis.text.y = element_text(size=10, face="bold", colour = "black"), strip.text.x = element_blank(), axis.line.y = element_line(), axis.line.x = element_line(), axis.ticks = element_line()) +
   guides(linetype=guide_legend("Fetal Sex"), color = FALSE)
 
-qplot(lnAAPmonosg_3U, hCGb.empl, data=bo, color = Sample, linetype = BabySex,geom='point') +  
-  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("hCGb")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) +
+qplot(lnAAPmonosg_3U, CGB.n, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("CGB")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) +
   theme(axis.text = element_text(size = 10)) +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
@@ -206,7 +241,23 @@ qplot(lnAAPmonosg_3U, hCGb.empl, data=bo, color = Sample, linetype = BabySex,geo
                                     face="bold")) +
   scale_linetype_discrete(name="Fetal\nSex",
                           breaks=c("1", "2"),
-                          labels=c("Male", "Female"))+ ylim(2.5, 10) +
+                          labels=c("Male", "Female"))+ ylim(-1, 1.5) +
+  theme(plot.title = element_text(face = "bold"), axis.text.x = element_text(size=10, face="bold", colour = "black"), axis.text.y = element_text(size=10, face="bold", colour = "black"), strip.text.x = element_blank(), axis.line.y = element_line(), axis.line.x = element_line(), axis.ticks = element_line()) +
+  guides(linetype=guide_legend("Fetal Sex"), color = FALSE)
+
+qplot(lnAAPmonosg_3U, SNORA46.SDHA, data=bo, color = Sample, linetype = BabySex,geom='point') +  
+  geom_smooth(aes(group=interaction(BabySex)), method = "lm") + facet_grid(.~Tissue)+theme_minimal() + ggtitle("SNORA46")+ theme(axis.title.x = element_blank(), axis.title.y = element_blank()) + theme(plot.title = element_text(face = "bold")) +
+  theme(axis.text = element_text(size = 10)) +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        strip.background = element_blank())+
+  theme(legend.text = element_text(size=10, 
+                                   face="bold"))+
+  theme(legend.title = element_text(size=10, 
+                                    face="bold")) +
+  scale_linetype_discrete(name="Fetal\nSex",
+                          breaks=c("1", "2"),
+                          labels=c("Male", "Female"))+ ylim(-1, 1.5) +
   theme(plot.title = element_text(face = "bold"), axis.text.x = element_text(size=10, face="bold", colour = "black"), axis.text.y = element_text(size=10, face="bold", colour = "black"), strip.text.x = element_blank(), axis.line.y = element_line(), axis.line.x = element_line(), axis.ticks = element_line()) +
   guides(linetype=guide_legend("Fetal Sex"), color = FALSE)
 

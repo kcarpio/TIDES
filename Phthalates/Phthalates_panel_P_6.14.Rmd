@@ -1,7 +1,7 @@
 ---
 title: "Phthalates panel, protein biomarkers (Empiria)"
 author: "KC"
-date: "4/26/2021"
+date: "6/14/2021"
 output: html_document
 ---
 
@@ -26,6 +26,8 @@ bo$Sample <- as.factor(bo$Sample)
 library(lme4)
 library(lmerTest)
 library(ggplot2)
+
+# Note: all panels have y-axis limits from 2.5 to 10 units.
 
 # Placental phthalates
 
